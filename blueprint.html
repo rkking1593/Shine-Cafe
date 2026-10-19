@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shine Cafe &amp; Restaurant · Digital Booking &amp; Operational System Blueprint</title>
+  <meta name="description" content="Digital Booking & Operations System Blueprint for Shine Cafe & Restaurant (Banquet Hall & Lawn), Zamania. Pure-vegetarian luxury hospitality and event management.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              950: '#072718',
+              900: '#0F5132', // Primary Brand Deep Emerald Green
+              850: '#115C39',
+              800: '#146C43',
+              700: '#198754',
+              100: '#D1E7DD',
+              50: '#F0F9F4',
+            },
+            gold: {
+              light: '#F5E6B3',
+              DEFAULT: '#D4AF37', // Accent Metallic Gold
+              dark: '#B38F24',
+              accent: '#ECC94B',
+              50: '#FDFBF5',
+              100: '#FAF3E0',
+            },
+            charcoal: {
+              DEFAULT: '#212529', // Charcoal Grey
+              dark: '#141619',
+              light: '#343A40',
+              muted: '#6C757D',
+            },
+            canvas: '#F8F9FA',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          boxShadow: {
+            'luxury': '0 20px 40px -15px rgba(15, 81, 50, 0.12), 0 0 1px 1px rgba(212, 175, 55, 0.15)',
+            'gold-glow': '0 0 20px rgba(212, 175, 55, 0.35)',
+            'card': '0 4px 20px -2px rgba(33, 37, 41, 0.05)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F8F9FA;
+      color: #212529;
+    }
+    .font-serif-luxury {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+    /* Gold Metallic Gradient Text */
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #D4AF37 0%, #F5E6B3 50%, #B38F24 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    /* Shake Animation for Wrong PIN */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
+    /* Pulse glow for status */
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.08); }
+    }
+    .status-pulse {
+      animation: subtlePulse 2s infinite ease-in-out;
+    }
+    /* Hero Slideshow Custom Fade */
+    .hero-slide {
+      transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* Range slider custom styling */
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      background: #D4AF37;
+      border: 3px solid #0F5132;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      margin-top: -7px;
+    }
+    input[type=range]::-moz-range-thumb {
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      background: #D4AF37;
+      border: 3px solid #0F5132;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-canvas text-charcoal antialiased selection:bg-gold selection:text-emerald-950">
+
+  <!-- ============================================================
+       PANEL 1: USER-FACING PORTAL (Visible by Default)
+       ============================================================ -->
+  <div id="user-portal" class="transition-opacity duration-300">
+
+    <!-- 1. STICKY EXECUTIVE HEADER (Single Row, Discrete Access Layer) -->
+    <header class="bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
+        
+        <!-- Brand Identity with 100% Pure Veg Emblem -->
+        <a href="#" class="flex items-center gap-3 group text-decoration-none">
+          <!-- Royal Emerald Crest with Gold Trim -->
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-emerald-900 border border-gold flex items-center justify-center text-gold shadow-sm group-hover:scale-105 transition-transform shrink-0">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-serif-luxury text-base sm:text-lg font-bold tracking-tight text-emerald-900 uppercase">
+                Shine Cafe &amp; Restaurant
+              </span>
+              <!-- Pure Veg Symbol (Green Dot inside Green Square) -->
+              <span class="w-3.5 h-3.5 border border-green-700 p-0.5 rounded-xs inline-flex items-center justify-center bg-white" title="100% Pure Vegetarian">
+                <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
+              </span>
+            </div>
+            <p class="text-[10px] sm:text-[11px] font-semibold text-stone-500 tracking-wider uppercase">
+              Banquet Hall &amp; Celebration Lawn · Zamania
+            </p>
+          </div>
+        </a>
+
+        <!-- Desktop Quick Links & Discrete Lock Icon -->
+        <div class="flex items-center gap-2 sm:gap-6">
+          <nav class="hidden lg:flex items-center gap-5 text-xs sm:text-sm font-semibold text-stone-700">
+            <a href="#menu-widget" class="hover:text-emerald-900 transition-colors">Digital Menu</a>
+            <a href="#calculator-widget" class="hover:text-emerald-900 transition-colors">Event Calculator</a>
+            <a href="#calendar-widget" class="hover:text-emerald-900 transition-colors">Lawn Availability</a>
+            <a href="#inquiry-section" class="hover:text-emerald-900 transition-colors">Connect with Staff</a>
+          </nav>
+
+          <!-- Discrete Gold-Accented Lock Icon Button (Exclusively triggers PIN Modal) -->
+          <button id="lock-modal-trigger" type="button" onclick="openAdminModal()" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-stone-100 hover:bg-gold/20 text-stone-700 hover:text-emerald-900 border border-stone-300 hover:border-gold transition-all duration-200 relative group" aria-label="Operations Desk Access" title="Operations Desk (Secure Staff Interface)">
+            <span class="text-base">🔒</span>
+            <span class="absolute -bottom-8 right-0 text-[10px] bg-emerald-950 text-gold px-2 py-0.5 rounded shadow whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-gold/30">
+              Operations Desk
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. HERO WELCOME SECTION WITH AUTOMATED RESPONSIVE SLIDESHOW -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 pt-5 pb-8">
+      <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-emerald-950 text-white border border-gold/30">
+        
+        <!-- Automated Image Slideshow Container (Cycles Every 2000ms) -->
+        <div class="relative h-[380px] sm:h-[440px] md:h-[480px] w-full overflow-hidden" id="hero-slider">
+          <!-- Slide 1 (Active by default) -->
+          <div class="hero-slide absolute inset-0 w-full h-full opacity-100 z-10">
+            <img src="images/shine_banquet_hall_1.webp" alt="Shine Cafe Grand Banquet Hall & Celebration Lawn" class="w-full h-full object-cover object-center filter brightness-90">
+          </div>
+          <!-- Slide 2 -->
+          <div class="hero-slide absolute inset-0 w-full h-full opacity-0 z-0">
+            <img src="images/shine_banquet_hall_2.webp" alt="Pillarless Luxury Event Space with Crystal Chandeliers" class="w-full h-full object-cover object-center filter brightness-90">
+          </div>
+          <!-- Slide 3 -->
+          <div class="hero-slide absolute inset-0 w-full h-full opacity-0 z-0">
+            <img src="images/shine_banquet_hall_3.webp" alt="Regal Banquet Dining Setup with Round Tables" class="w-full h-full object-cover object-center filter brightness-90">
+          </div>
+          <!-- Slide 4 -->
+          <div class="hero-slide absolute inset-0 w-full h-full opacity-0 z-0">
+            <img src="images/shine_cafe_sitting_1.webp" alt="Artisanal Cafe Lounge and Ambient Dining Area" class="w-full h-full object-cover object-center filter brightness-90">
+          </div>
+
+          <!-- Emerald & Gold Radial Gradients for Contrast -->
+          <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/75 to-emerald-950/20 z-20 pointer-events-none"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-950/40 to-transparent z-20 pointer-events-none"></div>
+        </div>
+
+        <!-- Banner Overlay Content (Proportional Typography Scaling) -->
+        <div class="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end z-30">
+          <div class="max-w-3xl">
+            <!-- Luxury Kicker Badge -->
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/20 border border-gold text-gold text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-2.5 backdrop-blur-md">
+              <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+              100% Pure Vegetarian · Wedding &amp; Banquet Destination
+            </div>
+
+            <!-- Main Display Title (Scaled for Clean Mobile/Tablet Rendering) -->
+            <h1 class="font-serif-luxury text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-2 leading-tight">
+              Elevating Hospitality in <span class="gold-gradient-text">Zamania</span>
+            </h1>
+            <p class="text-[11px] sm:text-xs font-semibold tracking-wider uppercase text-gold/90 mb-2.5">
+              Digital Booking &amp; Operations System Concept
+            </p>
+            <p class="text-xs sm:text-sm text-stone-200 mb-5 max-w-2xl leading-relaxed">
+              Zamania's royal landmark for grand weddings, family celebrations, and fine vegetarian dining. Featuring an expansive 500+ guest celebration lawn, opulent AC banquet hall, and bespoke hospitality.
+            </p>
+
+            <!-- Dynamic CTAs -->
+            <div class="flex flex-wrap items-center gap-3">
+              <a href="#menu-widget" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-gold hover:bg-gold-dark text-emerald-950 font-bold text-xs sm:text-sm shadow-gold-glow transition-all duration-200 active:scale-95">
+                <span>Explore Digital Menu</span>
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <a href="#calendar-widget" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-emerald-900/80 hover:bg-emerald-900 text-white font-bold text-xs sm:text-sm border border-gold/40 backdrop-blur-md transition-all duration-200 active:scale-95">
+                <span>Check Lawn Availability</span>
+                <svg class="w-4 h-4 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slideshow Indicators -->
+        <div class="absolute bottom-4 right-6 z-30 flex items-center gap-1.5" id="slider-dots">
+          <span class="w-6 h-1.5 rounded-full bg-gold transition-all duration-300"></span>
+          <span class="w-2 h-1.5 rounded-full bg-white/40 transition-all duration-300"></span>
+          <span class="w-2 h-1.5 rounded-full bg-white/40 transition-all duration-300"></span>
+          <span class="w-2 h-1.5 rounded-full bg-white/40 transition-all duration-300"></span>
+        </div>
+      </div>
+
+      <!-- Quick Trust Indicators (Exact 3 Cards: Cuisine, Banquet & Lawn Capacity, Spaces) -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-5">
+        <!-- Card 1: Cuisine -->
+        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-card flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-900 flex items-center justify-center font-bold text-lg shrink-0">🌿</div>
+          <div>
+            <div class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">Cuisine</div>
+            <div class="text-xs sm:text-sm font-extrabold text-emerald-900">100% Pure Vegetarian</div>
+          </div>
+        </div>
+
+        <!-- Card 2: Banquet & Lawn Capacity (Explicitly Golden Icon Framed) -->
+        <div class="bg-white p-4 rounded-2xl border-2 border-gold/60 shadow-gold-glow flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gold/15 border-2 border-gold text-gold-dark flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">
+            👥
+          </div>
+          <div>
+            <div class="text-[10px] font-extrabold text-gold-dark uppercase tracking-wider">Banquet &amp; Lawn Capacity</div>
+            <div class="text-xs sm:text-sm font-extrabold text-stone-900">100 to 500+ Guests</div>
+          </div>
+        </div>
+
+        <!-- Card 3: Spaces -->
+        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-card flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-900 flex items-center justify-center font-bold text-lg shrink-0">🏛️</div>
+          <div>
+            <div class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">Spaces</div>
+            <div class="text-xs sm:text-sm font-extrabold text-stone-900">AC Banquet &amp; Lawn</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SMART DYNAMIC MENU WIDGET -->
+    <section id="menu-widget" class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-card">
+        
+        <!-- Header (Jain Toggle Completely Removed) -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-stone-100">
+          <div>
+            <div class="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 mb-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-900"></span>
+              Culinary Showcase · Pure Vegetarian Fine Dining
+            </div>
+            <h2 class="font-serif-luxury text-xl sm:text-3xl font-bold text-charcoal">
+              Smart Dynamic Menu &amp; Royal Specialties
+            </h2>
+            <p class="text-xs sm:text-sm text-stone-500 mt-1">
+              Live pricing synchronized with operational kitchen inventory. Handcrafted pure-vegetarian gourmet recipes.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs font-bold text-emerald-900 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200/80 shrink-0">
+            <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+            100% Satvik &amp; Pure Veg Kitchen
+          </div>
+        </div>
+
+        <!-- Dishes Grid (Features required hardcoded items with live dynamic price IDs) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-7">
+          
+          <!-- Dish 1: Shine Special Paneer Kaju Curry (Hardcoded: ₹399) -->
+          <article class="bg-stone-50 rounded-2xl p-5 border border-stone-200/80 hover:border-gold hover:shadow-luxury transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3.5 h-3.5 border border-green-700 p-0.5 rounded-xs inline-flex items-center justify-center bg-white shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
+                  </span>
+                  <h3 class="font-serif-luxury font-bold text-sm sm:text-base text-charcoal group-hover:text-emerald-900 transition-colors">
+                    Shine Special Paneer Kaju Curry
+                  </h3>
+                </div>
+                <!-- Dynamic Price updated via Admin -->
+                <span class="text-sm sm:text-base font-extrabold text-emerald-900 bg-emerald-100/70 px-2.5 py-0.5 rounded-lg border border-emerald-900/10 shrink-0">
+                  ₹<span id="user-price-paneer">399</span>
+                </span>
+              </div>
+              <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                Rich royal cashew gravy infused with slow-roasted mawa, hand-pressed malai paneer cubes, and aromatic Kashmiri saffron essence.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-stone-200/60 flex items-center justify-between text-[11px] text-stone-400 font-medium">
+              <span>Clay Pot Simmered</span>
+              <span class="text-emerald-900 font-semibold">Chef's Signature</span>
+            </div>
+          </article>
+
+          <!-- Dish 2: Shine Special Mushroom Galouti Kabab (Hardcoded: ₹299) -->
+          <article class="bg-stone-50 rounded-2xl p-5 border border-stone-200/80 hover:border-gold hover:shadow-luxury transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3.5 h-3.5 border border-green-700 p-0.5 rounded-xs inline-flex items-center justify-center bg-white shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
+                  </span>
+                  <h3 class="font-serif-luxury font-bold text-sm sm:text-base text-charcoal group-hover:text-emerald-900 transition-colors">
+                    Shine Special Mushroom Galouti Kabab
+                  </h3>
+                </div>
+                <!-- Dynamic Price updated via Admin -->
+                <span class="text-sm sm:text-base font-extrabold text-emerald-900 bg-emerald-100/70 px-2.5 py-0.5 rounded-lg border border-emerald-900/10 shrink-0">
+                  ₹<span id="user-price-mushroom">299</span>
+                </span>
+              </div>
+              <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                Melt-in-mouth smoked button mushrooms tempered with 16 royal Awadhi spices, ghee roasted on slow mahi-tawa and served with mint chutney.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-stone-200/60 flex items-center justify-between text-[11px] text-stone-400 font-medium">
+              <span>Mahi-Tawa Smoked</span>
+              <span class="text-emerald-900 font-semibold">Signature Starter</span>
+            </div>
+          </article>
+
+          <!-- Dish 3: Dal Makhani Awadh Royale -->
+          <article class="bg-stone-50 rounded-2xl p-5 border border-stone-200/80 hover:border-gold hover:shadow-luxury transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3.5 h-3.5 border border-green-700 p-0.5 rounded-xs inline-flex items-center justify-center bg-white shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
+                  </span>
+                  <h3 class="font-serif-luxury font-bold text-sm sm:text-base text-charcoal group-hover:text-emerald-900 transition-colors">
+                    Dal Makhani Awadh Royale
+                  </h3>
+                </div>
+                <span class="text-sm sm:text-base font-extrabold text-emerald-900 bg-emerald-100/70 px-2.5 py-0.5 rounded-lg border border-emerald-900/10 shrink-0">
+                  ₹<span id="user-price-dal">279</span>
+                </span>
+              </div>
+              <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                Black urad lentils slow-simmered for 16 hours on clay tandoor embers, enriched with churned butter and fresh malai cream.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-stone-200/60 flex items-center justify-between text-[11px] text-stone-400 font-medium">
+              <span>16-Hour Slow Dum</span>
+              <span class="text-emerald-900 font-semibold">All-Time Favorite</span>
+            </div>
+          </article>
+
+          <!-- Dish 4: Royal Saffron Dum Biryani -->
+          <article class="bg-stone-50 rounded-2xl p-5 border border-stone-200/80 hover:border-gold hover:shadow-luxury transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3.5 h-3.5 border border-green-700 p-0.5 rounded-xs inline-flex items-center justify-center bg-white shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
+                  </span>
+                  <h3 class="font-serif-luxury font-bold text-sm sm:text-base text-charcoal group-hover:text-emerald-900 transition-colors">
+                    Royal Saffron Veg Dum Biryani
+                  </h3>
+                </div>
+                <span class="text-sm sm:text-base font-extrabold text-emerald-900 bg-emerald-100/70 px-2.5 py-0.5 rounded-lg border border-emerald-900/10 shrink-0">
+                  ₹<span id="user-price-biryani">329</span>
+                </span>
+              </div>
+              <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                Long-grain aged Basmati rice layered with garden vegetables, caramelized dry fruits, and saffron milk dum-cooked in sealed clay handi.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-stone-200/60 flex items-center justify-between text-[11px] text-stone-400 font-medium">
+              <span>Clay Handi Sealed</span>
+              <span class="text-emerald-900 font-semibold">Awadhi Dum</span>
+            </div>
+          </article>
+
+          <!-- Dish 5: Amritsari Chur Chur Naan Platter -->
+          <article class="bg-stone-50 rounded-2xl p-5 border border-stone-200/80 hover:border-gold hover:shadow-luxury transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3.5 h-3.5 border border-green-700 p-0.5 rounded-xs inline-flex items-center justify-center bg-white shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
+                  </span>
+                  <h3 class="font-serif-luxury font-bold text-sm sm:text-base text-charcoal group-hover:text-emerald-900 transition-colors">
+                    Amritsari Chur Chur Naan Platter
+                  </h3>
+                </div>
+                <span class="text-sm sm:text-base font-extrabold text-emerald-900 bg-emerald-100/70 px-2.5 py-0.5 rounded-lg border border-emerald-900/10 shrink-0">
+                  ₹<span id="user-price-naan">219</span>
+                </span>
+              </div>
+              <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                Flaky layered butter naan stuffed with spiced cottage cheese &amp; herbs, crushed by hand and served with pindi chole &amp; boondi raita.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-stone-200/60 flex items-center justify-between text-[11px] text-stone-400 font-medium">
+              <span>Tandoor Fresh</span>
+              <span class="text-emerald-900 font-semibold">Chef's Special</span>
+            </div>
+          </article>
+
+          <!-- Dish 6: Kesariya Rose Kulfi Falooda -->
+          <article class="bg-stone-50 rounded-2xl p-5 border border-stone-200/80 hover:border-gold hover:shadow-luxury transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-3.5 h-3.5 border border-green-700 p-0.5 rounded-xs inline-flex items-center justify-center bg-white shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-700"></span>
+                  </span>
+                  <h3 class="font-serif-luxury font-bold text-sm sm:text-base text-charcoal group-hover:text-emerald-900 transition-colors">
+                    Kesariya Rose Kulfi Falooda
+                  </h3>
+                </div>
+                <span class="text-sm sm:text-base font-extrabold text-emerald-900 bg-emerald-100/70 px-2.5 py-0.5 rounded-lg border border-emerald-900/10 shrink-0">
+                  ₹<span id="user-price-kulfi">179</span>
+                </span>
+              </div>
+              <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                Slow-reduced rich malai kulfi laced with organic Damask rose syrup, chia seeds, and handmade silky corn-starch vermicelli.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-stone-200/60 flex items-center justify-between text-[11px] text-stone-400 font-medium">
+              <span>Royal Dessert</span>
+              <span class="text-emerald-900 font-semibold">Artisanal Kulfi</span>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- 7. UPGRADED CTA: View Full Menu Packages (Interactive Dynamic Menu Folder) -->
+        <div class="mt-8 pt-6 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-stone-500 text-center sm:text-left">
+            Explore our comprehensive wedding banqueting packages, multi-course spreads, and live counters.
+          </div>
+          <button type="button" onclick="openFullMenuModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-900 hover:bg-emerald-850 text-white text-xs sm:text-sm font-bold border border-gold/40 shadow-sm transition-all duration-200 active:scale-95">
+            <span>📖 View Our Full Menu</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. DYNAMIC EVENT COST CALCULATOR SLIDER (Revenue Driver) -->
+    <section id="calculator-widget" class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div class="bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 rounded-3xl p-6 sm:p-10 border border-gold/40 shadow-2xl text-white">
+        
+        <div class="max-w-3xl mb-7">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/20 border border-gold text-gold text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2">
+            <span>⚡ Revenue Driver</span>
+            <span>·</span>
+            <span>Client Self-Estimation</span>
+          </div>
+          <h2 class="font-serif-luxury text-xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
+            Dynamic Event Cost Calculator
+          </h2>
+          <p class="text-xs sm:text-sm text-stone-300 mt-1.5">
+            Plan your wedding reception, ring ceremony, or grand banquet. Adjust the guest slider and select catering tiers for an instant estimate.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 items-center">
+          
+          <!-- Left: Controls (Guest Slider & Package Selector) -->
+          <div class="lg:col-span-7 space-y-5 bg-black/25 p-5 sm:p-6 rounded-2xl border border-white/10 backdrop-blur-sm">
+            
+            <!-- Guest Range Slider -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label for="guest-slider" class="text-xs sm:text-sm font-bold text-stone-200">
+                  Number of Guests (Range: 100 to 500+)
+                </label>
+                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gold text-emerald-950 text-xs sm:text-sm font-extrabold shadow-sm">
+                  <span id="guest-count-val">250</span> Guests
+                </span>
+              </div>
+              <input type="range" id="guest-slider" min="100" max="600" step="25" value="250" oninput="calculateEventCost()" class="w-full h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer">
+              <div class="flex justify-between text-[10px] sm:text-[11px] text-stone-400 font-semibold mt-1.5">
+                <span>100 Guests</span>
+                <span>250 Guests</span>
+                <span>400 Guests</span>
+                <span>500+ Guests</span>
+              </div>
+            </div>
+
+            <!-- Catering Package Dropdown -->
+            <div>
+              <label for="package-select" class="block text-xs sm:text-sm font-bold text-stone-200 mb-2">
+                Select Catering Package Tier
+              </label>
+              <div class="relative">
+                <select id="package-select" onchange="calculateEventCost()" class="w-full bg-emerald-950 text-white font-semibold text-xs sm:text-sm rounded-xl px-4 py-3 border border-gold/40 focus:border-gold focus:ring-1 focus:ring-gold outline-none cursor-pointer appearance-none">
+                  <option value="400">Standard Package (₹400/plate) — 2 Starters, 3 Mains, Breads, Dessert</option>
+                  <option value="600" selected>Premium Package (₹600/plate) — 4 Starters, 5 Mains, Biryani, 2 Desserts</option>
+                  <option value="900">Luxury Package (₹900/plate) — Live Counters, 6 Starters, 7 Mains, Mocktails</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gold">
+                  <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Optional Banquet Add-ons -->
+            <div>
+              <label class="block text-[10px] sm:text-xs font-bold text-gold uppercase tracking-wider mb-2">
+                Optional Celebration Add-ons
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <label class="flex items-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-gold/50 cursor-pointer">
+                  <input type="checkbox" id="addon-stage" onchange="calculateEventCost()" class="w-4 h-4 rounded text-gold focus:ring-0 accent-gold">
+                  <span>Royal Stage &amp; Floral Decor (+₹25,000)</span>
+                </label>
+                <label class="flex items-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-gold/50 cursor-pointer">
+                  <input type="checkbox" id="addon-audio" onchange="calculateEventCost()" class="w-4 h-4 rounded text-gold focus:ring-0 accent-gold">
+                  <span>Acoustic Audio &amp; DJ (+₹15,000)</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Live Result Display Box -->
+          <div class="lg:col-span-5 bg-white text-charcoal p-5 sm:p-7 rounded-2xl border-2 border-gold shadow-2xl flex flex-col justify-between h-full">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-stone-400">Official Estimate</span>
+                <span class="text-[10px] sm:text-xs font-bold text-emerald-900 bg-emerald-100 px-2.5 py-0.5 rounded-full">GST &amp; Service Inclusive</span>
+              </div>
+
+              <!-- Main Output Target -->
+              <div class="my-5 text-center">
+                <div class="text-[11px] font-semibold text-stone-500 uppercase tracking-widest mb-1">
+                  Estimated Event Cost
+                </div>
+                <div id="cost-display" class="font-serif-luxury text-2xl sm:text-4xl font-extrabold text-emerald-900 tracking-tight">
+                  ₹1,50,000
+                </div>
+                <div id="breakdown-text" class="text-xs text-stone-500 mt-1.5 font-medium">
+                  ₹600 × 250 Guests
+                </div>
+              </div>
+
+              <div class="space-y-1.5 text-xs text-stone-600 bg-stone-50 p-3 rounded-xl border border-stone-200">
+                <div class="flex justify-between">
+                  <span>Banquet Hall &amp; Lawn:</span>
+                  <span class="font-bold text-emerald-900">Included (Complimentary)</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Chairs, Linen &amp; Tables:</span>
+                  <span class="font-bold text-emerald-900">Included</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Pure Veg Service Staff:</span>
+                  <span class="font-bold text-emerald-900">Included</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <a href="#inquiry-section" onclick="syncCalculatorToInquiry()" class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gold hover:bg-gold-dark text-emerald-950 font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95">
+                <span>Lock This Estimate in Inquiry →</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. AVAILABILITY CALENDAR WITH DYNAMIC MONTH/YEAR PAGINATION WIDGET -->
+    <section id="calendar-widget" class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-card">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-stone-100">
+          <div>
+            <div class="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-900 mb-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-900"></span>
+              Live Booking Ledger
+            </div>
+            <h2 class="font-serif-luxury text-xl sm:text-3xl font-bold text-charcoal">
+              Banquet &amp; Lawn Availability Calendar
+            </h2>
+            <p class="text-xs sm:text-sm text-stone-500 mt-1">
+              Check auspicious wedding dates and local celebrations in Zamania, UP.
+            </p>
+          </div>
+
+          <!-- Calendar Status Legend -->
+          <div class="flex flex-wrap items-center gap-2.5 text-xs font-semibold">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-300">
+              <span class="w-2 h-2 rounded-full bg-emerald-600"></span> Available Date
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-300">
+              <span class="w-2 h-2 rounded-full bg-rose-600"></span> Booked / Marriage Event Local
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-gold">
+              <span class="w-2 h-2 rounded-full bg-gold"></span> Selected For You
+            </span>
+          </div>
+        </div>
+
+        <!-- Month / Year Pagination Navigation Controls -->
+        <div class="mt-6 flex items-center justify-between bg-stone-50 p-3 sm:p-4 rounded-2xl border border-stone-200">
+          <button type="button" onclick="changeCalendarMonth(-1)" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-gold/20 text-stone-700 hover:text-emerald-900 border border-stone-300 hover:border-gold text-xs sm:text-sm font-bold shadow-xs transition-all active:scale-95">
+            <span>‹ Prev Month</span>
+          </button>
+
+          <!-- Active Dynamic Month Marker -->
+          <div class="text-center">
+            <div id="calendar-month-label" class="font-serif-luxury text-base sm:text-lg font-bold text-emerald-950">
+              November 2026
+            </div>
+            <div id="calendar-season-tag" class="text-[10px] font-bold text-gold-dark uppercase tracking-wider">
+              Peak Lagan Season
+            </div>
+          </div>
+
+          <button type="button" onclick="changeCalendarMonth(1)" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-gold/20 text-stone-700 hover:text-emerald-900 border border-stone-300 hover:border-gold text-xs sm:text-sm font-bold shadow-xs transition-all active:scale-95">
+            <span>Next Month ›</span>
+          </button>
+        </div>
+
+        <!-- Monthly Grid -->
+        <div class="mt-4">
+          <!-- Weekday Headers -->
+          <div class="grid grid-cols-7 gap-1.5 sm:gap-2 text-center text-[10px] sm:text-xs font-extrabold text-stone-500 uppercase tracking-wider mb-2">
+            <span>Sun</span>
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+          </div>
+
+          <!-- Dynamic Calendar Slots -->
+          <div id="calendar-grid" class="grid grid-cols-7 gap-1.5 sm:gap-2">
+            <!-- Populated smoothly via JS -->
+          </div>
+        </div>
+
+        <!-- Interactive Selected Date Callout -->
+        <div class="mt-5 p-3.5 sm:p-4 rounded-2xl bg-stone-50 border border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-gold/20 text-gold-dark flex items-center justify-center font-bold text-base shrink-0">
+              📅
+            </div>
+            <div>
+              <div class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Your Desired Date</div>
+              <div id="selected-date-display" class="text-xs sm:text-sm font-extrabold text-emerald-950">
+                16th November 2026 (Available)
+              </div>
+            </div>
+          </div>
+
+          <div class="text-[11px] text-stone-500 text-center sm:text-right">
+            Click any green slot to switch your booking inquiry date.
+          </div>
+        </div>
+
+        <!-- 6. FORMAL WHATSAPP INQUIRY SECTION & ACTION BUTTON -->
+        <div id="inquiry-section" class="mt-7 pt-7 border-t border-stone-100">
+          <div class="bg-gradient-to-r from-emerald-900 to-emerald-950 p-6 sm:p-8 rounded-2xl text-white flex flex-col lg:flex-row items-center justify-between gap-6 shadow-xl border border-gold/30">
+            <div class="max-w-xl">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gold text-emerald-950 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2">
+                Staff Direct Coordination
+              </div>
+              <h3 class="font-serif-luxury text-lg sm:text-2xl font-bold">
+                Lock Your Celebration Dates with Shine Cafe
+              </h3>
+              <p class="text-xs sm:text-sm text-stone-300 mt-1">
+                Our team will personally verify hall availability, review menu customizations, and arrange a private lawn tour.
+              </p>
+            </div>
+
+            <!-- WhatsApp Action Button (📱 Chat with Us) -->
+            <button type="button" onclick="submitFormalWhatsAppInquiry()" class="w-full lg:w-auto inline-flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-xs sm:text-sm shadow-lg transition-all duration-200 active:scale-95 shrink-0">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.554zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+              </svg>
+              <span>📱 Submit Formal Inquiry &amp; Chat with Us</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal text-stone-300 border-t border-stone-800 py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center text-xs space-y-2.5">
+        <p class="font-serif-luxury text-sm sm:text-base text-gold font-bold">
+          Shine Cafe &amp; Restaurant (Banquet Hall &amp; Lawn)
+        </p>
+        <p class="text-stone-400 text-xs">
+          Near Sun Shine Public School, Zamania, Sarai Murad Ali, Kasera Pokhra, Uttar Pradesh 232329
+        </p>
+        <p class="text-stone-500 text-[11px] pt-3 border-t border-stone-800">
+          &copy; 2026 Shine Cafe &amp; Restaurant. 100% Pure-Vegetarian Luxury Banqueting &amp; Dining.
+        </p>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- ============================================================
+       PANEL 2: SECURE OPERATIONS DESK (PIN Protected: "1234")
+       ============================================================ -->
+  <div id="admin-panel" class="hidden min-h-screen bg-stone-900 text-stone-100 pb-16 transition-opacity duration-300">
+    
+    <!-- Singular Clean Header (Double Navigation Row Removed) -->
+    <header class="bg-emerald-950 border-b border-gold/40 px-4 sm:px-8 py-4 sticky top-0 z-40 shadow-xl">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gold/20 text-gold border border-gold flex items-center justify-center font-bold text-lg shrink-0">
+            🔒
+          </div>
+          <div>
+            <h1 class="font-serif-luxury text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              Shine Cafe Operations Desk
+              <span class="text-[10px] sm:text-xs font-sans font-semibold text-gold bg-gold/15 px-2 py-0.5 rounded border border-gold/30">
+                Secure Staff Interface
+              </span>
+            </h1>
+            <p class="text-[11px] text-stone-300 flex items-center gap-1.5 mt-0.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 status-pulse"></span>
+              Live Sync Active · Changes reflect instantly on Guest Portal
+            </p>
+          </div>
+        </div>
+
+        <!-- Singular Crisp Back Link Button -->
+        <button type="button" onclick="switchToUserPortal()" class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl bg-white/10 hover:bg-gold hover:text-emerald-950 text-white font-bold text-xs sm:text-sm border border-gold/50 shadow-sm transition-all duration-200 active:scale-95 shrink-0">
+          <span>← Return to Customer View</span>
+        </button>
+
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-8 pt-6 space-y-6">
+      
+      <!-- Operational KPI Metrics Row (3 Core Staff Metrics) -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-stone-800/80 p-4 sm:p-5 rounded-2xl border border-stone-700 shadow-md">
+          <div class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Active Leads</div>
+          <div class="text-xl sm:text-2xl font-extrabold text-gold mt-1" id="admin-lead-count">5 Leads</div>
+          <div class="text-[10px] sm:text-[11px] text-emerald-400 mt-1">● 2 Pending Staff Review</div>
+        </div>
+        <div class="bg-stone-800/80 p-4 sm:p-5 rounded-2xl border border-stone-700 shadow-md flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Booked Peak Dates</span>
+            <span class="text-[9px] font-bold text-rose-400 bg-rose-950/60 px-2 py-0.5 rounded-full border border-rose-800/80">
+              Peak Log
+            </span>
+          </div>
+          <div class="text-xl sm:text-2xl font-extrabold text-rose-400 my-1" id="admin-booked-count">7 Dates</div>
+          <div class="flex items-center justify-between gap-1 text-[10px] sm:text-[11px] text-stone-300">
+            <div class="flex items-center gap-1.5 font-semibold">
+              <span id="admin-month-context">November 2026</span>
+              <div class="inline-flex items-center gap-1">
+                <button type="button" onclick="changeAdminPeakMonth(-1)" class="w-5 h-5 rounded bg-stone-900 hover:bg-gold/20 text-stone-300 hover:text-gold border border-stone-600 flex items-center justify-center text-xs font-bold transition-all active:scale-95" title="Previous Month" aria-label="Previous Month">‹</button>
+                <button type="button" onclick="changeAdminPeakMonth(1)" class="w-5 h-5 rounded bg-stone-900 hover:bg-gold/20 text-stone-300 hover:text-gold border border-stone-600 flex items-center justify-center text-xs font-bold transition-all active:scale-95" title="Next Month" aria-label="Next Month">›</button>
+              </div>
+            </div>
+            <span id="admin-season-context" class="text-rose-400/80 text-[10px] font-medium hidden xs:inline truncate">Peak Lagan Season</span>
+          </div>
+        </div>
+        <div class="bg-stone-800/80 p-4 sm:p-5 rounded-2xl border border-stone-700 shadow-md">
+          <div class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Top Package Tier</div>
+          <div class="text-xl sm:text-2xl font-extrabold text-gold mt-1">₹600 Premium</div>
+          <div class="text-[10px] sm:text-[11px] text-stone-400 mt-1">65% Client Preference</div>
+        </div>
+      </div>
+
+      <!-- Feature 1 & 2: Live Price Updater & Calendar Date Blocker -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- FEATURE 1: LIVE PRICE UPDATER (DYNAMIC SEARCHABLE DROPDOWN OVERHAUL) -->
+        <section class="bg-stone-800/90 rounded-3xl p-5 sm:p-6 border border-stone-700 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3.5 border-b border-stone-700">
+              <div class="flex items-center gap-2">
+                <span class="text-lg">💰</span>
+                <h2 class="font-serif-luxury text-base sm:text-lg font-bold text-white">
+                  Live Price Updater
+                </h2>
+              </div>
+              <span class="text-[10px] font-bold text-gold bg-gold/15 px-2.5 py-0.5 rounded-full border border-gold/30">
+                Active DOM Sync
+              </span>
+            </div>
+            
+            <p class="text-xs text-stone-400 mt-2.5 mb-4">
+              Query and update any dish price across the digital system. Changes reflect on the customer portal instantly in real-time.
+            </p>
+
+            <!-- Searchable Dropdown Component -->
+            <div class="space-y-4">
+
+              <!-- 1. Top Layer Selector & Integrated Filter Search -->
+              <div class="relative" id="price-dropdown-container">
+                <label class="block text-[10px] sm:text-xs font-bold text-stone-300 uppercase tracking-wider mb-1.5">
+                  Select Menu Item
+                </label>
+                
+                <!-- Stylized drop container reading "Select the Item ▾" -->
+                <button type="button" id="price-dropdown-trigger" onclick="togglePriceDropdown(event)" class="w-full bg-stone-900 border border-stone-600 hover:border-gold focus:border-gold rounded-xl px-4 py-3 flex items-center justify-between text-white text-xs sm:text-sm font-semibold transition-all shadow-inner focus:outline-none">
+                  <span id="price-dropdown-selected-text" class="truncate text-stone-200">Select the Item ▾</span>
+                  <span class="text-gold text-xs shrink-0 ml-2" id="price-dropdown-arrow">▼</span>
+                </button>
+
+                <!-- 2. Integrated Filter Search Dropdown Panel (Revealed upon tapping container) -->
+                <div id="price-dropdown-menu" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-stone-950 border border-gold/50 rounded-2xl shadow-2xl z-40 p-2.5 text-stone-200 backdrop-blur-md">
+                  <!-- Text Search Filter Box -->
+                  <div class="mb-2">
+                    <div class="relative">
+                      <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 text-xs">🔍</span>
+                      <input type="text" id="price-search-input" oninput="handlePriceSearchFilter()" placeholder="Search dish (e.g. Paneer, Mushroom)..." autocomplete="off" class="w-full bg-stone-900 border border-stone-700 focus:border-gold rounded-xl pl-8 pr-3 py-2 text-xs text-white placeholder-stone-500 outline-none transition-colors">
+                    </div>
+                  </div>
+
+                  <!-- 3. Dynamic Target Binding Options Pool -->
+                  <div id="price-dropdown-options" class="max-h-52 overflow-y-auto space-y-1 pr-1">
+                    <!-- Populated dynamically with items via JavaScript -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Real-time DOM Synced Values: Dynamic Label Block -->
+              <div id="price-current-status-box" class="bg-stone-950/70 border border-stone-700/80 rounded-xl p-3.5 flex items-center justify-between">
+                <div>
+                  <div class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Dynamic Status</div>
+                  <div id="price-current-label" class="text-xs sm:text-sm font-bold text-stone-200 mt-0.5">
+                    Current Price: ₹<span id="price-current-val">---</span>
+                  </div>
+                </div>
+                <span id="price-dish-badge" class="text-[10px] font-bold text-stone-400 bg-stone-800 px-2.5 py-1 rounded-lg border border-stone-700 truncate max-w-[150px]">
+                  Select Item Above
+                </span>
+              </div>
+
+              <!-- 5. Interactive Target Input & High-Contrast Action Button -->
+              <form onsubmit="handlePriceUpdate(event)" class="space-y-4">
+                <div>
+                  <label for="admin-new-system-price" class="block text-[10px] sm:text-xs font-bold text-stone-300 uppercase tracking-wider mb-1.5">
+                    Enter New System Price
+                  </label>
+                  <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-stone-400 font-bold">₹</span>
+                    <input type="number" id="admin-new-system-price" placeholder="Enter new price in ₹" min="10" max="5000" class="w-full bg-stone-900 border border-stone-600 focus:border-gold rounded-xl pl-8 pr-4 py-2.5 text-xs sm:text-sm font-bold text-white outline-none transition-colors">
+                  </div>
+                </div>
+
+                <div class="pt-1">
+                  <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-xl bg-gold hover:bg-gold-dark text-emerald-950 font-extrabold text-xs sm:text-sm shadow-gold-glow transition-all active:scale-95">
+                    <span>Update System Menu</span>
+                  </button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-stone-700/60 text-[10px] sm:text-[11px] text-stone-400 flex items-center justify-between">
+            <span id="price-sync-status">Status: All prices synchronized</span>
+            <span class="text-emerald-400 font-medium">● 0 pending changes</span>
+          </div>
+        </section>
+
+        <!-- FEATURE 2: CALENDAR DATE BLOCKER -->
+        <section class="bg-stone-800/90 rounded-3xl p-5 sm:p-6 border border-stone-700 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3.5 border-b border-stone-700">
+              <div class="flex items-center gap-2">
+                <span class="text-lg">📅</span>
+                <h2 class="font-serif-luxury text-base sm:text-lg font-bold text-white">
+                  Calendar Date Blocker
+                </h2>
+              </div>
+              <span class="text-[10px] font-bold text-rose-400 bg-rose-950/60 px-2.5 py-0.5 rounded-full border border-rose-800">
+                Availability Guard
+              </span>
+            </div>
+
+            <p class="text-xs text-stone-400 mt-2.5 mb-5">
+              Select any currently available green date to flip it into a red booked slot on the customer calendar and log the reservation.
+            </p>
+
+            <form onsubmit="handleDateBlock(event)" class="space-y-4">
+              <div>
+                <label for="block-date-select" class="block text-[10px] sm:text-xs font-bold text-stone-300 uppercase tracking-wider mb-1.5">
+                  Select Available Date (<span id="block-month-target">November 2026</span>)
+                </label>
+                <select id="block-date-select" class="w-full bg-stone-900 border border-stone-600 focus:border-gold rounded-xl px-4 py-2.5 text-xs sm:text-sm font-semibold text-white outline-none transition-colors">
+                  <!-- Populated dynamically with available dates for current month -->
+                </select>
+              </div>
+
+              <div>
+                <label for="block-reason-input" class="block text-[10px] sm:text-xs font-bold text-stone-300 uppercase tracking-wider mb-1.5">
+                  Client / Event Title
+                </label>
+                <input type="text" id="block-reason-input" placeholder="e.g. Mishra Family Tilak Ceremony" required class="w-full bg-stone-900 border border-stone-600 focus:border-gold rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-stone-500 outline-none transition-colors">
+              </div>
+
+              <div class="pt-1">
+                <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all active:scale-95">
+                  <span>Mark Date as Booked</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-stone-700/60 text-[10px] sm:text-[11px] text-stone-400 flex items-center justify-between">
+            <span>Customer slots update immediately</span>
+            <span class="text-rose-400 font-medium">● Prevents double booking</span>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- FEATURE 3: INCOMING LEAD TRACKER -->
+      <section class="bg-stone-800/90 rounded-3xl p-5 sm:p-6 border border-stone-700 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-stone-700">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-lg">📋</span>
+              <h2 class="font-serif-luxury text-base sm:text-lg font-bold text-white">
+                Incoming Lead Tracker &amp; Booking Ledger
+              </h2>
+            </div>
+            <p class="text-xs text-stone-400 mt-1">
+              Sample structural customer inquiries received via the digital blueprint system.
+            </p>
+          </div>
+
+          <span class="text-[11px] text-stone-400 bg-stone-900 px-3 py-1 rounded-xl border border-stone-700">
+            Real-time Reception CRM
+          </span>
+        </div>
+
+        <!-- Stylized Data Table Grid (Scrollable on small mobile screens) -->
+        <div class="overflow-x-auto mt-4">
+          <table class="w-full text-left text-xs whitespace-nowrap">
+            <thead>
+              <tr class="bg-stone-900/80 text-stone-400 uppercase tracking-wider border-b border-stone-700">
+                <th class="px-4 py-3 font-bold rounded-l-xl">Client Name</th>
+                <th class="px-4 py-3 font-bold">Guests</th>
+                <th class="px-4 py-3 font-bold">Event Date</th>
+                <th class="px-4 py-3 font-bold">Package Tier</th>
+                <th class="px-4 py-3 font-bold">Est. Value</th>
+                <th class="px-4 py-3 font-bold">Status</th>
+                <th class="px-4 py-3 font-bold rounded-r-xl text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="leads-table-body" class="divide-y divide-stone-700/50 text-stone-200">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- ============================================================
+       ANIMATED HOVER OVERLAY MENU MODAL (View Our Full Menu)
+       ============================================================ -->
+  <div id="full-menu-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all duration-300">
+    <div id="full-menu-card" class="bg-stone-900 border border-gold/40 rounded-3xl p-6 sm:p-10 max-w-lg w-full text-center shadow-2xl relative text-white transform transition-all duration-300 scale-95 opacity-0">
+      
+      <!-- Close Button -->
+      <button type="button" onclick="closeFullMenuModal()" class="absolute top-4 right-4 text-stone-400 hover:text-white text-lg w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center transition-colors">
+        ✕
+      </button>
+
+      <!-- Luxury Emblem Icon -->
+      <div class="w-14 h-14 rounded-2xl bg-emerald-950 border border-gold mx-auto flex items-center justify-center text-gold text-2xl shadow-gold-glow mb-4">
+        📖
+      </div>
+
+      <!-- Modal Title & Header -->
+      <div class="text-[10px] font-bold text-gold uppercase tracking-widest mb-1">
+        Executive Operations Notice
+      </div>
+      <h3 class="font-serif-luxury text-xl sm:text-2xl font-bold text-white mb-2">
+        Shine Cafe &amp; Restaurant
+      </h3>
+
+      <!-- Centered Informational Text Block Required by User -->
+      <div class="my-6 p-4 rounded-2xl bg-stone-950/60 border border-stone-800">
+        <p class="text-stone-200 text-xs sm:text-sm font-semibold leading-relaxed text-center max-w-sm mx-auto">
+          Dine-in Menu is currently being updated to match our live kitchen operations.
+        </p>
+      </div>
+
+      <!-- Prominent Gold-Accented Action Button -->
+      <div class="pt-2">
+        <button type="button" onclick="handleMenuPdfDownloadPlaceholder()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gold hover:bg-gold-dark text-emerald-950 font-extrabold text-xs sm:text-sm shadow-gold-glow transition-all active:scale-95">
+          <span>📥 Download Our Full Menu PDF</span>
+        </button>
+      </div>
+
+      <div class="mt-6 pt-4 border-t border-stone-800/80 text-[11px] text-stone-400">
+        100% Pure Vegetarian Fine Dining &bull; Zamania, Ghazipur UP
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       ADMIN PIN MODAL (Protected: "1234")
+       ============================================================ -->
+  <div id="admin-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div id="admin-modal-card" class="bg-stone-900 border border-gold/40 rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl relative text-white">
+      
+      <!-- Close Button -->
+      <button type="button" onclick="closeAdminModal()" class="absolute top-4 right-4 text-stone-400 hover:text-white text-lg w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center transition-colors">
+        ✕
+      </button>
+
+      <!-- Royal Lock Shield Icon -->
+      <div class="w-14 h-14 rounded-2xl bg-emerald-950 border border-gold mx-auto flex items-center justify-center text-gold text-2xl shadow-gold-glow mb-4">
+        🔒
+      </div>
+
+      <h3 class="font-serif-luxury text-xl font-bold text-white mb-1">
+        Staff PIN Authentication
+      </h3>
+      <p class="text-xs text-stone-400 mb-6">
+        Enter the 4-digit operational code to unlock the Shine Cafe Operations Desk.
+      </p>
+
+      <!-- PIN Input Form -->
+      <form onsubmit="handlePinSubmit(event)">
+        <div class="mb-4">
+          <input type="password" id="admin-pin-input" maxlength="4" placeholder="••••" autocomplete="off" class="w-36 text-center text-3xl font-mono tracking-[0.5em] bg-stone-950 text-gold border-2 border-gold/60 focus:border-gold rounded-2xl py-3 px-2 outline-none mx-auto block shadow-inner">
+        </div>
+
+        <!-- Subtle Access Denied Error message -->
+        <div id="pin-error-msg" class="hidden text-xs text-rose-400 font-semibold mb-3">
+          ⚠️ Incorrect PIN. Access Denied.
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl bg-gold hover:bg-gold-dark text-emerald-950 font-extrabold text-sm shadow-md transition-all active:scale-95 mb-4">
+          Unlock Operations Desk
+        </button>
+      </form>
+
+      <!-- Discreet Evaluator Hint -->
+      <div class="pt-3 border-t border-stone-800 text-[11px] text-stone-500">
+        Demo Evaluator PIN: <strong class="text-gold font-mono">1234</strong>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       TOAST NOTIFICATION COMPONENT
+       ============================================================ -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 bg-emerald-950 text-white border border-gold px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold transform translate-y-24 opacity-0 transition-all duration-300 flex items-center gap-3">
+    <span id="toast-icon">✅</span>
+    <span id="toast-msg">Operation completed successfully.</span>
+  </div>
+
+
+  <!-- ============================================================
+       VANILLA JAVASCRIPT: LOGIC & SYSTEM STATE CONTROLLER
+       ============================================================ -->
+  <script>
+    // --- Month Name Constants & Helpers ---
+    const MONTH_NAMES = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    function getMonthKey(year, monthIndex) {
+      return `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+    }
+
+    function getSeasonTag(monthIndex) {
+      switch (monthIndex) {
+        case 10:
+        case 11:
+          return "Peak Lagan & Winter Celebrations";
+        case 0:
+        case 1:
+          return "Auspicious Spring Wedding Season";
+        case 2:
+        case 3:
+          return "Spring & Chaitra Celebrations";
+        case 4:
+        case 5:
+          return "Summer Banquet & Gala Season";
+        case 6:
+        case 7:
+        case 8:
+          return "Monsoon & Festive Dining";
+        case 9:
+          return "Navratri & Pre-Wedding Celebrations";
+        default:
+          return "Royal Banquet Season";
+      }
+    }
+
+    // --- Active Memory State ---
+    const SYSTEM_STATE = {
+      // Dynamic Target Binding for Live Price Updater
+      menuItems: [
+        { id: "paneer", name: "Shine Special Paneer Kaju Curry", price: 399, elemId: "user-price-paneer", tag: "Chef's Signature" },
+        { id: "mushroom", name: "Shine Special Mushroom Galouti Kabab", price: 299, elemId: "user-price-mushroom", tag: "Signature Starter" },
+        { id: "dal", name: "Dal Makhani Awadh Royale", price: 279, elemId: "user-price-dal", tag: "All-Time Favorite" },
+        { id: "biryani", name: "Royal Saffron Veg Dum Biryani", price: 329, elemId: "user-price-biryani", tag: "Awadhi Dum" },
+        { id: "naan", name: "Amritsari Chur Chur Naan Platter", price: 219, elemId: "user-price-naan", tag: "Chef's Special" },
+        { id: "kulfi", name: "Kesariya Rose Kulfi Falooda", price: 179, elemId: "user-price-kulfi", tag: "Royal Dessert" }
+      ],
+      selectedPriceDishId: null, // "Select the Item ▾" default state
+      menuPrices: {
+        paneer: 399,
+        mushroom: 299,
+        dal: 279,
+        biryani: 329,
+        naan: 219,
+        kulfi: 179
+      },
+      // Dedicated Booked Peak Dates Widget Metric Pointer:
+      adminPeakYear: 2026,
+      adminPeakMonth: 10, // 0-indexed: 10 = November 2026
+      // Authentic Infinite Gregorian Calendar Engine:
+      calendarYear: 2026,
+      calendarMonth: 10, // 0-indexed: 10 = November 2026
+      selectedDate: 16,
+      selectedMonth: 10,
+      selectedYear: 2026,
+      // Booked peak dates keyed by YYYY-MM
+      bookedDatesByMonth: {
+        "2026-11": [12, 15, 18, 21, 22, 27, 28],
+        "2026-12": [4, 8, 11, 14, 18, 24],
+        "2027-01": [15, 20, 22, 26, 30],
+        "2027-02": [5, 10, 14, 18, 23],
+        "2027-03": [7, 12, 19, 26],
+        "2027-04": [9, 14, 21, 28],
+        "2027-05": [3, 8, 15, 22, 29]
+      },
+      leads: [
+        { id: 1, name: "Rahul Singh", guests: 450, date: "15th Nov 2026", package: "Luxury (₹900)", estValue: "₹4,05,000", status: "Pending Review" },
+        { id: 2, name: "Pooja Verma", guests: 250, date: "21st Nov 2026", package: "Premium (₹600)", estValue: "₹1,50,000", status: "Confirmed Advance" },
+        { id: 3, name: "Amitabh Tiwari", guests: 350, date: "27th Nov 2026", package: "Standard (₹400)", estValue: "₹1,40,000", status: "Follow-up Required" },
+        { id: 4, name: "Suresh Chaudhary", guests: 500, date: "05th Dec 2026", package: "Luxury (₹900)", estValue: "₹4,50,000", status: "Pending Review" },
+        { id: 5, name: "Dr. K. N. Pandey", guests: 180, date: "18th Nov 2026", package: "Premium (₹600)", estValue: "₹1,08,000", status: "Contract Sent" }
+      ]
+    };
+
+    // --- Toast Notification Helper ---
+    function showToast(message, icon = '✅') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastIcon = document.getElementById('toast-icon');
+      if (!toast) return;
+
+      toastMsg.textContent = message;
+      toastIcon.textContent = icon;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3500);
+    }
+
+    // --- Modal & Admin Authentication Logic ---
+    function openAdminModal() {
+      const modal = document.getElementById('admin-modal');
+      const pinInput = document.getElementById('admin-pin-input');
+      const errorMsg = document.getElementById('pin-error-msg');
+      if (modal && pinInput) {
+        modal.classList.remove('hidden');
+        pinInput.value = '';
+        if (errorMsg) errorMsg.classList.add('hidden');
+        setTimeout(() => pinInput.focus(), 100);
+      }
+    }
+
+    function closeAdminModal() {
+      const modal = document.getElementById('admin-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function handlePinSubmit(e) {
+      e.preventDefault();
+      const pinInput = document.getElementById('admin-pin-input');
+      const errorMsg = document.getElementById('pin-error-msg');
+      const card = document.getElementById('admin-modal-card');
+      const pin = pinInput ? pinInput.value.trim() : '';
+
+      if (pin === "1234") {
+        closeAdminModal();
+        switchToAdminPanel();
+        showToast("Access Granted: Welcome to Shine Operations Desk 🔒", "👑");
+      } else {
+        if (errorMsg) errorMsg.classList.remove('hidden');
+        if (card) {
+          card.classList.add('animate-shake');
+          setTimeout(() => card.classList.remove('animate-shake'), 500);
+        }
+        if (pinInput) {
+          pinInput.value = '';
+          pinInput.focus();
+        }
+      }
+    }
+
+    function switchToAdminPanel() {
+      const userPortal = document.getElementById('user-portal');
+      const adminPanel = document.getElementById('admin-panel');
+
+      if (userPortal && adminPanel) {
+        userPortal.classList.add('hidden');
+        adminPanel.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function switchToUserPortal() {
+      const userPortal = document.getElementById('user-portal');
+      const adminPanel = document.getElementById('admin-panel');
+
+      if (userPortal && adminPanel) {
+        adminPanel.classList.add('hidden');
+        userPortal.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // --- Automated Hero Slideshow (2000ms Cross-Fade) ---
+    function initHeroSlideshow() {
+      const slides = document.querySelectorAll('.hero-slide');
+      const dots = document.querySelectorAll('#slider-dots span');
+      if (!slides.length) return;
+
+      let currentIndex = 0;
+      setInterval(() => {
+        slides[currentIndex].classList.remove('opacity-100', 'z-10');
+        slides[currentIndex].classList.add('opacity-0', 'z-0');
+        if (dots[currentIndex]) {
+          dots[currentIndex].className = "w-2 h-1.5 rounded-full bg-white/40 transition-all duration-300";
+        }
+
+        currentIndex = (currentIndex + 1) % slides.length;
+
+        slides[currentIndex].classList.remove('opacity-0', 'z-0');
+        slides[currentIndex].classList.add('opacity-100', 'z-10');
+        if (dots[currentIndex]) {
+          dots[currentIndex].className = "w-6 h-1.5 rounded-full bg-gold transition-all duration-300";
+        }
+      }, 2000);
+    }
+
+    // --- Overhauled Menu Overlay Modal Logic ---
+    function openFullMenuModal() {
+      const modal = document.getElementById('full-menu-modal');
+      const card = document.getElementById('full-menu-card');
+      if (modal && card) {
+        modal.classList.remove('hidden');
+        requestAnimationFrame(() => {
+          card.classList.remove('scale-95', 'opacity-0');
+          card.classList.add('scale-100', 'opacity-100');
+        });
+      }
+    }
+
+    function closeFullMenuModal() {
+      const modal = document.getElementById('full-menu-modal');
+      const card = document.getElementById('full-menu-card');
+      if (modal && card) {
+        card.classList.remove('scale-100', 'opacity-100');
+        card.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+        }, 200);
+      }
+    }
+
+    function handleMenuPdfDownloadPlaceholder() {
+      showToast("Dine-in Menu PDF will be enabled upon kitchen inventory release.", "📥");
+    }
+
+    // --- Dynamic Event Cost Calculator Logic ---
+    function calculateEventCost() {
+      const guestSlider = document.getElementById('guest-slider');
+      const packageSelect = document.getElementById('package-select');
+      const guestCountVal = document.getElementById('guest-count-val');
+      const costDisplay = document.getElementById('cost-display');
+      const breakdownText = document.getElementById('breakdown-text');
+
+      const addonStage = document.getElementById('addon-stage');
+      const addonAudio = document.getElementById('addon-audio');
+
+      if (!guestSlider || !packageSelect || !costDisplay) return;
+
+      const guests = parseInt(guestSlider.value, 10);
+      const perPlateRate = parseInt(packageSelect.value, 10);
+
+      let addOnTotal = 0;
+      let addonList = [];
+      if (addonStage && addonStage.checked) {
+        addOnTotal += 25000;
+        addonList.push("Stage Decor (₹25k)");
+      }
+      if (addonAudio && addonAudio.checked) {
+        addOnTotal += 15000;
+        addonList.push("Audio/DJ (₹15k)");
+      }
+
+      const totalCost = (guests * perPlateRate) + addOnTotal;
+
+      if (guestCountVal) guestCountVal.textContent = guests;
+
+      const formattedTotal = new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0
+      }).format(totalCost);
+
+      costDisplay.textContent = formattedTotal;
+
+      let breakdownStr = `₹${perPlateRate} × ${guests} Guests`;
+      if (addonList.length > 0) {
+        breakdownStr += ` + ${addonList.join(' + ')}`;
+      }
+      if (breakdownText) breakdownText.textContent = breakdownStr;
+    }
+
+    function syncCalculatorToInquiry() {
+      const guestSlider = document.getElementById('guest-slider');
+      const guests = guestSlider ? guestSlider.value : 250;
+      showToast(`Selected ${guests} Guests & Synchronized with Inquiry!`, "🎯");
+    }
+
+    // --- 2. AUTHENTIC INFINITE GREGORIAN CALENDAR DATE ENGINE ---
+    function changeCalendarMonth(direction) {
+      SYSTEM_STATE.calendarMonth += direction;
+      if (SYSTEM_STATE.calendarMonth > 11) {
+        SYSTEM_STATE.calendarMonth = 0;
+        SYSTEM_STATE.calendarYear += 1;
+      } else if (SYSTEM_STATE.calendarMonth < 0) {
+        SYSTEM_STATE.calendarMonth = 11;
+        SYSTEM_STATE.calendarYear -= 1;
+      }
+      renderCalendarGrid();
+    }
+
+    function renderCalendarGrid() {
+      const container = document.getElementById('calendar-grid');
+      const monthLabel = document.getElementById('calendar-month-label');
+      const seasonTag = document.getElementById('calendar-season-tag');
+      const blockDateSelect = document.getElementById('block-date-select');
+      const blockMonthTarget = document.getElementById('block-month-target');
+      const selectedDateDisplay = document.getElementById('selected-date-display');
+      const adminBookedCount = document.getElementById('admin-booked-count');
+      const adminMonthContext = document.getElementById('admin-month-context');
+
+      if (!container) return;
+
+      const year = SYSTEM_STATE.calendarYear;
+      const month = SYSTEM_STATE.calendarMonth;
+      const monthName = MONTH_NAMES[month];
+      const fullMonthYearString = `${monthName} ${year}`;
+      const monthKey = getMonthKey(year, month);
+
+      // Authentically compute days in month & starting day of week
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const startDayOfWeek = new Date(year, month, 1).getDay(); // 0 = Sunday
+
+      // Retrieve booked dates for this active month
+      const bookedDates = SYSTEM_STATE.bookedDatesByMonth[monthKey] || [];
+
+      // Update Labels Automatically with exact Month + Year
+      if (monthLabel) monthLabel.textContent = fullMonthYearString;
+      if (seasonTag) seasonTag.textContent = getSeasonTag(month);
+      if (blockMonthTarget) blockMonthTarget.textContent = fullMonthYearString;
+
+      container.innerHTML = '';
+      if (blockDateSelect) blockDateSelect.innerHTML = '';
+
+      // 1. Empty Leading Offset Slots for first day of week
+      for (let i = 0; i < startDayOfWeek; i++) {
+        const emptySlot = document.createElement('div');
+        emptySlot.className = "h-16 sm:h-20 rounded-xl bg-stone-100/40 border border-transparent";
+        container.appendChild(emptySlot);
+      }
+
+      // 2. Day Slots
+      for (let day = 1; day <= daysInMonth; day++) {
+        const isBooked = bookedDates.includes(day);
+        const isSelected = (
+          SYSTEM_STATE.selectedYear === year &&
+          SYSTEM_STATE.selectedMonth === month &&
+          SYSTEM_STATE.selectedDate === day
+        );
+
+        const slot = document.createElement('div');
+        slot.setAttribute('data-day', day);
+
+        if (isBooked) {
+          // RED BOOKED SLOT
+          slot.className = "p-1.5 sm:p-2.5 rounded-xl border border-rose-300 bg-rose-50/90 text-rose-950 flex flex-col justify-between h-16 sm:h-20 transition-all duration-200 select-none shadow-xs";
+          slot.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="font-extrabold text-xs sm:text-sm text-rose-800">${day}</span>
+              <span class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-rose-600"></span>
+            </div>
+            <div class="mt-auto">
+              <span class="block text-[8px] sm:text-[9px] font-bold text-rose-700 leading-tight uppercase truncate">
+                Booked / Local Event
+              </span>
+            </div>
+          `;
+        } else {
+          // GREEN AVAILABLE SLOT
+          const selectedClasses = isSelected ? "ring-2 ring-gold border-gold bg-amber-50/80" : "border-emerald-200 bg-emerald-50/70 hover:border-emerald-400";
+          slot.className = `p-1.5 sm:p-2.5 rounded-xl border ${selectedClasses} text-emerald-950 flex flex-col justify-between h-16 sm:h-20 cursor-pointer transition-all duration-200 hover:scale-[1.02] shadow-xs`;
+          slot.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="font-extrabold text-xs sm:text-sm text-emerald-900">${day}</span>
+              <span class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full ${isSelected ? 'bg-gold' : 'bg-emerald-600'}"></span>
+            </div>
+            <div class="mt-auto">
+              <span class="inline-block text-[8px] sm:text-[9px] font-bold ${isSelected ? 'text-amber-900 font-extrabold' : 'text-emerald-800'} leading-tight uppercase">
+                ${isSelected ? 'Selected' : 'Available'}
+              </span>
+            </div>
+          `;
+
+          // Click to Select for Customer Inquiry
+          slot.addEventListener('click', () => {
+            SYSTEM_STATE.selectedDate = day;
+            SYSTEM_STATE.selectedMonth = month;
+            SYSTEM_STATE.selectedYear = year;
+            renderCalendarGrid();
+            if (selectedDateDisplay) {
+              selectedDateDisplay.textContent = `${day}th ${fullMonthYearString} (Available)`;
+            }
+            showToast(`Selected ${day}th ${fullMonthYearString} for your booking inquiry!`, "📅");
+          });
+
+          // Add to Operations Desk Blocker Dropdown
+          if (blockDateSelect) {
+            const opt = document.createElement('option');
+            opt.value = day;
+            opt.textContent = `${day}th ${fullMonthYearString} (Available)`;
+            blockDateSelect.appendChild(opt);
+          }
+        }
+
+        container.appendChild(slot);
+      }
+    }
+
+    // --- Operations Desk Metric: Booked Peak Dates Widget Pagination Engine ---
+    function changeAdminPeakMonth(direction) {
+      SYSTEM_STATE.adminPeakMonth += direction;
+      if (SYSTEM_STATE.adminPeakMonth > 11) {
+        SYSTEM_STATE.adminPeakMonth = 0;
+        SYSTEM_STATE.adminPeakYear += 1;
+      } else if (SYSTEM_STATE.adminPeakMonth < 0) {
+        SYSTEM_STATE.adminPeakMonth = 11;
+        SYSTEM_STATE.adminPeakYear -= 1;
+      }
+      updateAdminPeakDatesMetric();
+    }
+
+    function updateAdminPeakDatesMetric() {
+      const year = SYSTEM_STATE.adminPeakYear;
+      const month = SYSTEM_STATE.adminPeakMonth;
+      const monthKey = getMonthKey(year, month);
+      const bookedDates = SYSTEM_STATE.bookedDatesByMonth[monthKey] || [];
+
+      const adminBookedCount = document.getElementById('admin-booked-count');
+      const adminMonthContext = document.getElementById('admin-month-context');
+      const adminSeasonContext = document.getElementById('admin-season-context');
+
+      if (adminBookedCount) {
+        adminBookedCount.textContent = `${bookedDates.length} Dates`;
+      }
+      if (adminMonthContext) {
+        adminMonthContext.textContent = `${MONTH_NAMES[month]} ${year}`;
+      }
+      if (adminSeasonContext) {
+        let season = "Peak Season";
+        if (month === 10 || month === 11) season = "Peak Lagan Season";
+        else if (month === 0 || month === 1) season = "Spring Wedding Season";
+        else if (month === 2 || month === 3) season = "Spring Celebrations";
+        else if (month === 4 || month === 5) season = "Summer Gala Season";
+        else if (month >= 6 && month <= 8) season = "Festive Dining Season";
+        else if (month === 9) season = "Navratri Celebrations";
+        adminSeasonContext.textContent = season;
+      }
+    }
+
+    // --- Operations Desk Feature 1: Live Price Updater (Searchable Dropdown Engine) ---
+    function togglePriceDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('price-dropdown-menu');
+      const arrow = document.getElementById('price-dropdown-arrow');
+      if (!menu) return;
+
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        if (arrow) arrow.textContent = '▲';
+        renderPriceDropdownOptions('');
+        const searchInput = document.getElementById('price-search-input');
+        if (searchInput) {
+          searchInput.value = '';
+          setTimeout(() => searchInput.focus(), 50);
+        }
+      } else {
+        closePriceDropdown();
+      }
+    }
+
+    function closePriceDropdown() {
+      const menu = document.getElementById('price-dropdown-menu');
+      const arrow = document.getElementById('price-dropdown-arrow');
+      if (menu) menu.classList.add('hidden');
+      if (arrow) arrow.textContent = '▼';
+    }
+
+    function handlePriceSearchFilter() {
+      const searchInput = document.getElementById('price-search-input');
+      const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+      renderPriceDropdownOptions(query);
+    }
+
+    function renderPriceDropdownOptions(filterQuery = '') {
+      const container = document.getElementById('price-dropdown-options');
+      if (!container) return;
+
+      container.innerHTML = '';
+      const filtered = SYSTEM_STATE.menuItems.filter(item => 
+        item.name.toLowerCase().includes(filterQuery) ||
+        (item.tag && item.tag.toLowerCase().includes(filterQuery))
+      );
+
+      if (filtered.length === 0) {
+        const emptyNotice = document.createElement('div');
+        emptyNotice.className = "p-3 text-center text-xs text-stone-500 font-medium";
+        emptyNotice.textContent = `No dishes found matching "${filterQuery}"`;
+        container.appendChild(emptyNotice);
+        return;
+      }
+
+      filtered.forEach(item => {
+        const isSelected = SYSTEM_STATE.selectedPriceDishId === item.id;
+        const opt = document.createElement('div');
+        opt.className = `p-2.5 rounded-xl cursor-pointer flex items-center justify-between transition-colors ${
+          isSelected 
+            ? 'bg-emerald-950/80 border border-gold text-gold font-bold' 
+            : 'hover:bg-stone-800 text-stone-200 border border-transparent'
+        }`;
+        opt.innerHTML = `
+          <div class="flex flex-col min-w-0 pr-2">
+            <span class="text-xs sm:text-sm font-semibold truncate ${isSelected ? 'text-gold' : 'text-stone-100'}">${item.name}</span>
+            <span class="text-[10px] text-stone-400 font-medium">${item.tag || 'Specialty'}</span>
+          </div>
+          <span class="text-xs sm:text-sm font-extrabold ${isSelected ? 'text-gold' : 'text-emerald-400'} bg-stone-900/90 px-2 py-0.5 rounded-lg border border-stone-700 shrink-0">
+            ₹${item.price}
+          </span>
+        `;
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectPriceDish(item.id);
+        });
+        container.appendChild(opt);
+      });
+    }
+
+    function selectPriceDish(dishId) {
+      const item = SYSTEM_STATE.menuItems.find(m => m.id === dishId);
+      if (!item) return;
+
+      SYSTEM_STATE.selectedPriceDishId = dishId;
+      closePriceDropdown();
+
+      // 1. Top Layer Selector Label
+      const selectedText = document.getElementById('price-dropdown-selected-text');
+      if (selectedText) {
+        selectedText.textContent = `${item.name} ▾`;
+      }
+
+      // 4. Real-time DOM Synced Values: Dynamic Label Block reading "Current Price: ₹XXXX" directly underneath
+      const currentVal = document.getElementById('price-current-val');
+      const dishBadge = document.getElementById('price-dish-badge');
+      if (currentVal) currentVal.textContent = item.price;
+      if (dishBadge) {
+        dishBadge.textContent = item.tag || "Chef's Special";
+        dishBadge.className = "text-[10px] font-bold text-gold bg-gold/15 px-2.5 py-1 rounded-lg border border-gold/30 truncate max-w-[150px]";
+      }
+
+      // 5. Interactive Target Input: Pre-populate input for convenient updating
+      const priceInput = document.getElementById('admin-new-system-price');
+      if (priceInput) {
+        priceInput.value = item.price;
+        priceInput.focus();
+        priceInput.select();
+      }
+
+      showToast(`Selected "${item.name}" (Current: ₹${item.price})`, "🔍");
+    }
+
+    function handlePriceUpdate(e) {
+      e.preventDefault();
+      const dishId = SYSTEM_STATE.selectedPriceDishId;
+      if (!dishId) {
+        showToast("Please tap 'Select the Item ▾' and choose a dish first.", "⚠️");
+        togglePriceDropdown();
+        return;
+      }
+
+      const item = SYSTEM_STATE.menuItems.find(m => m.id === dishId);
+      const priceInput = document.getElementById('admin-new-system-price');
+      const syncStatus = document.getElementById('price-sync-status');
+      const currentVal = document.getElementById('price-current-val');
+
+      if (!item || !priceInput) return;
+
+      const newPrice = parseInt(priceInput.value, 10);
+      if (isNaN(newPrice) || newPrice <= 0) {
+        showToast("Please enter a valid price amount.", "⚠️");
+        return;
+      }
+
+      // 1. Update internal state memory
+      item.price = newPrice;
+      SYSTEM_STATE.menuPrices[item.id] = newPrice;
+
+      // 2. Real-time DOM Synced Values: Update customer layout template automatically without web refresh cycles
+      const customerPriceElem = document.getElementById(item.elemId);
+      if (customerPriceElem) {
+        customerPriceElem.textContent = newPrice;
+        // Visual gold pulse on customer card price badge
+        customerPriceElem.classList.add('text-gold');
+        setTimeout(() => customerPriceElem.classList.remove('text-gold'), 1200);
+      }
+
+      // 3. Update dynamic status block
+      if (currentVal) currentVal.textContent = newPrice;
+
+      // 4. Update sync status indicator
+      if (syncStatus) {
+        syncStatus.textContent = `Status: ${item.name} set to ₹${newPrice} (${new Date().toLocaleTimeString()})`;
+      }
+
+      // Re-render dropdown list options to show new price
+      renderPriceDropdownOptions('');
+
+      showToast(`System Menu Updated: ${item.name} is now ₹${newPrice}! 💰`, "✅");
+    }
+
+    // --- Operations Desk Feature 2: Calendar Date Blocker Logic (In-Memory Retention) ---
+    function handleDateBlock(e) {
+      e.preventDefault();
+      const blockSelect = document.getElementById('block-date-select');
+      const reasonInput = document.getElementById('block-reason-input');
+
+      if (!blockSelect) return;
+
+      const dateToBlock = parseInt(blockSelect.value, 10);
+      const reason = reasonInput ? reasonInput.value.trim() : 'Manual Reservation';
+
+      if (!dateToBlock) {
+        showToast("Please choose an available date to block.", "⚠️");
+        return;
+      }
+
+      const year = SYSTEM_STATE.calendarYear;
+      const month = SYSTEM_STATE.calendarMonth;
+      const monthKey = getMonthKey(year, month);
+      const fullMonthYearString = `${MONTH_NAMES[month]} ${year}`;
+
+      if (!SYSTEM_STATE.bookedDatesByMonth[monthKey]) {
+        SYSTEM_STATE.bookedDatesByMonth[monthKey] = [];
+      }
+
+      if (!SYSTEM_STATE.bookedDatesByMonth[monthKey].includes(dateToBlock)) {
+        SYSTEM_STATE.bookedDatesByMonth[monthKey].push(dateToBlock);
+        SYSTEM_STATE.bookedDatesByMonth[monthKey].sort((a, b) => a - b);
+      }
+
+      // Append to leads as Confirmed Advance
+      const newLead = {
+        id: Date.now(),
+        name: reason || "Direct Walk-in Advance",
+        guests: 350,
+        date: `${dateToBlock}th ${fullMonthYearString}`,
+        package: "Premium (₹600)",
+        estValue: "₹2,10,000",
+        status: "Confirmed Advance"
+      };
+      SYSTEM_STATE.leads.unshift(newLead);
+
+      renderCalendarGrid();
+      updateAdminPeakDatesMetric();
+      renderLeadsTable();
+
+      if (reasonInput) reasonInput.value = '';
+
+      showToast(`Date ${dateToBlock}th ${fullMonthYearString} marked as Booked in Calendar! 🔒`, "📅");
+    }
+
+    // --- Operations Desk Feature 3: Incoming Lead Tracker Table Renderer ---
+    function renderLeadsTable() {
+      const tableBody = document.getElementById('leads-table-body');
+      const leadCountDisplay = document.getElementById('admin-lead-count');
+      if (!tableBody) return;
+
+      tableBody.innerHTML = '';
+
+      if (leadCountDisplay) {
+        leadCountDisplay.textContent = `${SYSTEM_STATE.leads.length} Leads`;
+      }
+
+      SYSTEM_STATE.leads.forEach(lead => {
+        const row = document.createElement('tr');
+        row.className = "hover:bg-stone-800/60 transition-colors";
+
+        let statusBadge = '';
+        if (lead.status === "Pending Review") {
+          statusBadge = '<span class="px-2 py-0.5 rounded-full bg-amber-950/80 text-amber-300 border border-amber-800 text-[10px] font-bold">Pending Review</span>';
+        } else if (lead.status === "Confirmed Advance") {
+          statusBadge = '<span class="px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-800 text-[10px] font-bold">Confirmed Advance</span>';
+        } else {
+          statusBadge = `<span class="px-2 py-0.5 rounded-full bg-blue-950/80 text-blue-300 border border-blue-800 text-[10px] font-bold">${lead.status}</span>`;
+        }
+
+        row.innerHTML = `
+          <td class="px-4 py-3 font-bold text-white flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-emerald-900 text-gold flex items-center justify-center text-[10px] shrink-0 font-extrabold">
+              ${lead.name.charAt(0)}
+            </span>
+            <span>${lead.name}</span>
+          </td>
+          <td class="px-4 py-3 font-semibold text-stone-300">${lead.guests} Guests</td>
+          <td class="px-4 py-3 font-semibold text-gold">${lead.date}</td>
+          <td class="px-4 py-3 text-stone-300">${lead.package}</td>
+          <td class="px-4 py-3 font-bold text-emerald-400">${lead.estValue}</td>
+          <td class="px-4 py-3">${statusBadge}</td>
+          <td class="px-4 py-3 text-right space-x-1">
+            <button type="button" onclick="confirmLead(${lead.id})" class="px-2.5 py-1 rounded bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 text-[10px] font-bold border border-emerald-700/50 transition-colors" title="Confirm Lead">
+              Confirm
+            </button>
+            <button type="button" onclick="contactLeadWhatsApp('${lead.name}', '${lead.date}')" class="px-2.5 py-1 rounded bg-[#25D366]/20 hover:bg-[#25D366] text-emerald-300 hover:text-white text-[10px] font-bold border border-[#25D366]/40 transition-colors" title="Chat on WhatsApp">
+              Chat
+            </button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function confirmLead(id) {
+      const target = SYSTEM_STATE.leads.find(l => l.id === id);
+      if (target) {
+        target.status = "Confirmed Advance";
+        renderLeadsTable();
+        showToast(`Lead for ${target.name} confirmed!`, "✅");
+      }
+    }
+
+    function contactLeadWhatsApp(name, date) {
+      const msg = encodeURIComponent(`Hello ${name}, this is the Operations Team at Shine Cafe & Restaurant (Banquet Hall & Lawn), Zamania regarding your event booking inquiry for ${date}.`);
+      window.open(`https://wa.me/918887766554?text=${msg}`, '_blank');
+    }
+
+    // --- Action Button: Formal WhatsApp Inquiry Generator ---
+    function submitFormalWhatsAppInquiry() {
+      const guestSlider = document.getElementById('guest-slider');
+      const packageSelect = document.getElementById('package-select');
+      const costDisplay = document.getElementById('cost-display');
+
+      const guests = guestSlider ? guestSlider.value : 250;
+      const packageText = packageSelect ? packageSelect.options[packageSelect.selectedIndex].text : "Premium Package (₹600/plate)";
+      const estCost = costDisplay ? costDisplay.textContent : "₹1,50,000";
+      const chosenDate = `${SYSTEM_STATE.selectedDate}th ${MONTH_NAMES[SYSTEM_STATE.selectedMonth]} ${SYSTEM_STATE.selectedYear}`;
+
+      let message = `*Shine Cafe & Restaurant (Banquet Hall & Lawn) - Formal Booking Inquiry*\n`;
+      message += `──────────────────────────────────────\n`;
+      message += `🏛️ *Venue:* Shine Grand Banquet Hall & Celebration Lawn (Zamania)\n`;
+      message += `📅 *Selected Event Date:* ${chosenDate}\n`;
+      message += `👥 *Estimated Guests:* ${guests} Guests\n`;
+      message += `🍽️ *Catering Choice:* ${packageText}\n`;
+      message += `🌿 *Dietary Preference:* 100% Pure Vegetarian\n`;
+      message += `💰 *Calculated Est. Budget:* ${estCost}\n`;
+      message += `──────────────────────────────────────\n`;
+      message += `_Submitted via Shine Cafe Digital Operations Blueprint_\n`;
+      message += `Please confirm hall availability and arrange a private lawn tour.`;
+
+      const encodedMsg = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/918887766554?text=${encodedMsg}`;
+
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    }
+
+    // --- Initialise on Load ---
+    document.addEventListener('DOMContentLoaded', () => {
+      initHeroSlideshow();
+      calculateEventCost();
+      renderCalendarGrid();
+      updateAdminPeakDatesMetric();
+      renderLeadsTable();
+
+      // Click outside to dismiss price dropdown
+      document.addEventListener('click', (e) => {
+        const container = document.getElementById('price-dropdown-container');
+        if (container && !container.contains(e.target)) {
+          closePriceDropdown();
+        }
+      });
+
+      // Escape key to dismiss price dropdown
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closePriceDropdown();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

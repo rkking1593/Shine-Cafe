@@ -1,0 +1,17 @@
+# Test & preview screenshots (generated locally, not part of source)
+test_*.png
+temp_*.html
+
+# Legacy backup file
+index_website.html
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# Node (if ever used)
+node_modules/
